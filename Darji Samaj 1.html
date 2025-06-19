@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARJI Samaj - દર્જી સમાજ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #764ba2;
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #764ba2;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Side Panel */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .side-panel.active {
+            left: 0;
+        }
+
+        .side-panel-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #764ba2;
+        }
+
+        .side-panel-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .side-panel-menu li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .side-panel-menu li:hover {
+            background: #f8f9fa;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 20px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 3rem 2rem;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #764ba2;
+            text-align: center;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .about-highlights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .history-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0;
+            width: 15px;
+            height: 15px;
+            background: #764ba2;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #764ba2;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: 15px;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: #764ba2;
+            font-size: 1.2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .gallery-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #764ba2;
+        }
+
+        /* Members List */
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .members-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .member-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .member-info h4 {
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+
+        .member-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Charity Billing */
+        .charity-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .charity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .charity-table th, .charity-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .charity-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .charity-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .total-row {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .export-buttons {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">DARJI Samaj</a>
+                <div class="menu-toggle" onclick="toggleSidePanel()">
+                    ⋯
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Side Panel -->
+    <div class="side-panel" id="sidePanel">
+        <div class="side-panel-header">
+            <h3>Menu</h3>
+            <span class="close-btn" onclick="toggleSidePanel()">×</span>
+        </div>
+        <ul class="side-panel-menu">
+            <li onclick="showMembers()">Members Detail</li>
+            <li onclick="showNewMember()">New Members</li>
+            <li onclick="showCharityBilling()">Charity Billing</li>
+            <li onclick="showCharityRecords()">Charity Given</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>દર્જી સમાજ</h1>
+                <p>Preserving Heritage, Building Future</p>
+            </section>
+
+            <!-- About Section -->
+            <section class="section">
+                <h2>About DARJI Samaj</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>The DARJI Samaj is a vibrant community known for their exceptional craftsmanship in tailoring and textile arts. Our community has been an integral part of Indian society for centuries, contributing significantly to the textile industry and cultural heritage.</p>
+                        
+                        <p>The word "DARJI" derives from the Persian word "Darzi," meaning tailor. Our ancestors were master craftsmen who created exquisite garments for royalty and common people alike. Today, we continue this proud tradition while adapting to modern times.</p>
+                        
+                        <p>Our community values education, hard work, and mutual support. We believe in preserving our cultural heritage while embracing progress and innovation. The DARJI Samaj is committed to the welfare of all community members and continues to play an active role in social and economic development.</p>
+                    </div>
+                    <div class="about-highlights">
+                        <h3 style="margin-bottom: 1.5rem;">Community Highlights</h3>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">✂️</div>
+                            <div>Master Craftsmen in Textile Arts</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🏛️</div>
+                            <div>Rich Cultural Heritage</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🤝</div>
+                            <div>Strong Community Bonds</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">📚</div>
+                            <div>Emphasis on Education</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-icon">🌟</div>
+                            <div>Progressive Outlook</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn" onclick="showFullHistory()">Explore Full History</button>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="section">
+                <h2>Our History</h2>
+                <div class="history-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">Ancient Times</div>
+                        <p>The DARJI community traces its origins to ancient India, where skilled artisans were highly respected for their craftsmanship in creating fine garments and textiles.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">Medieval Period</div>
+                        <p>During the Mughal era, DARJI craftsmen gained prominence in royal courts, creating elaborate costumes and traditional wear for nobility and rulers.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">Colonial Era</div>
+                        <p>The community adapted to changing times, incorporating new techniques while preserving traditional methods of tailoring and textile production.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">Modern Era</div>
+                        <p>Today, the DARJI community continues to thrive, with members excelling in various fields while maintaining their cultural identity and supporting community development.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Works -->
+            <section class="section">
+                <h2>Our Community Works</h2>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <div class="gallery-img">Education Initiative</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Scholarship Program</div>
+                            <p>Providing educational scholarships to deserving students from our community, helping them pursue higher education and professional courses.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">Healthcare Support</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Medical Assistance</div>
+                            <p>Organizing health camps and providing medical assistance to community members in need, ensuring healthcare accessibility for all.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">Cultural Events</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Heritage Preservation</div>
+                            <p>Organizing cultural events, workshops, and festivals to preserve and promote our rich cultural heritage and traditional arts.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">Skill Development</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Training Programs</div>
+                            <p>Conducting skill development programs and workshops to help community members enhance their professional capabilities.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">Social Welfare</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Community Support</div>
+                            <p>Providing support to families in need, including financial assistance, food distribution, and disaster relief efforts.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">Women Empowerment</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Women's Development</div>
+                            <p>Empowering women through skill training, entrepreneurship support, and leadership development programs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deities Section -->
+            <section class="section">
+                <h2>Our Revered Deities</h2>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Durga</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Durga</div>
+                            <p>The divine mother goddess, worshipped for strength, protection, and victory over evil. Our community seeks her blessings for prosperity and well-being.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Lakshmi</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Lakshmi</div>
+                            <p>The goddess of wealth, fortune, and prosperity. We pray to Maa Lakshmi for success in our endeavors and financial stability.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Saraswati</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Saraswati</div>
+                            <p>The goddess of knowledge, wisdom, and arts. Our community honors her for guidance in education and creative pursuits.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Kali</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Kali</div>
+                            <p>The fierce goddess who destroys evil and protects the innocent. We seek her blessings for courage and protection from adversities.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Ambika</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Ambika</div>
+                            <p>The divine mother, another form of Durga, worshipped for her nurturing and protective qualities. She guides our community with love and care.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-img">🕉️ Maa Bhavani</div>
+                        <div class="gallery-content">
+                            <div class="gallery-title">Maa Bhavani</div>
+                            <p>The goddess of existence and nature, revered for her power to grant wishes and fulfill desires. Our community seeks her divine grace.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- New Member Modal -->
+    <div class="modal" id="newMemberModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('newMemberModal')">&times;</span>
+            <h2>Add New Member</h2>
+            
+            <div class="charity-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberName">Full Name:</label>
+                        <input type="text" id="memberName" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberPhone">Phone Number:</label>
+                        <input type="tel" id="memberPhone" placeholder="Enter phone number">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberOccupation">Occupation:</label>
+                        <input type="text" id="memberOccupation" placeholder="Enter occupation">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberCity">City:</label>
+                        <input type="text" id="memberCity" placeholder="Enter city">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberEmail">Email (Optional):</label>
+                        <input type="email" id="memberEmail" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="memberAge">Age:</label>
+                        <input type="number" id="memberAge" placeholder="Enter age" min="1" max="120">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="memberAddress">Address:</label>
+                    <input type="text" id="memberAddress" placeholder="Enter full address">
+                </div>
+                <button class="btn" onclick="addNewMember()">Add Member</button>
+                <button class="btn" onclick="clearMemberForm()" style="background: #6c757d;">Clear Form</button>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3>Recently Added Members</h3>
+                <div class="members-list" id="recentMembersList" style="max-height: 200px;">
+                    <!-- Recently added members will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Members Modal -->
+    <div class="modal" id="membersModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('membersModal')">&times;</span>
+            <h2>Community Members</h2>
+            <input type="text" class="search-box" id="memberSearch" placeholder="Search members..." onkeyup="searchMembers()">
+            <div class="members-list" id="membersList">
+                <!-- Members will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Charity Records Modal -->
+    <div class="modal" id="charityRecordsModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('charityRecordsModal')">&times;</span>
+            <h2>Charity Records</h2>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
+                <h3 style="margin-bottom: 10px;">Total Charity Collection</h3>
+                <div style="font-size: 2rem; font-weight: bold;" id="totalCharityAmount">₹0</div>
+                <p style="margin-top: 10px; opacity: 0.9;">Total donations received by DARJI Samaj</p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" class="search-box" id="charitySearch" placeholder="Search by donor name, purpose, or amount..." onkeyup="searchCharityRecords()">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="margin-right: 15px; color: #764ba2; font-weight: bold;">Filter by Purpose:</label>
+                    <select id="purposeFilter" onchange="filterCharityRecords()" style="padding: 8px; border: 2px solid #ddd; border-radius: 5px;">
+                        <option value="">All Purposes</option>
+                        <option value="Education">Education</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Cultural Events">Cultural Events</option>
+                        <option value="Temple Maintenance">Temple Maintenance</option>
+                        <option value="Community Development">Community Development</option>
+                        <option value="Emergency Relief">Emergency Relief</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 10px;">
+                <table class="charity-table" id="charityRecordsTable">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Donor Name</th>
+                            <th>Amount (₹)</th>
+                            <th>Purpose</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="charityRecordsTableBody">
+                        <!-- Charity records will be displayed here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                <h4 style="color: #764ba2; margin-bottom: 10px;">Summary Statistics</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;" id="totalDonors">0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Total Donors</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;" id="totalDonations">0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Total Donations</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;" id="averageDonation">₹0</div>
+                        <div style="font-size: 0.9rem; color: #666;">Average Donation</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-buttons">
+                <button class="btn" onclick="exportCharityRecordsToPDF()">Export Records as PDF</button>
+                <button class="btn" onclick="exportCharityRecordsToImage()">Export as Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charity Billing Modal -->
+    <div class="modal" id="charityModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('charityModal')">&times;</span>
+            <h2>Charity Billing</h2>
+            
+            <div class="charity-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="donorName">Donor Name:</label>
+                        <input type="text" id="donorName" placeholder="Enter donor name">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (₹):</label>
+                        <input type="number" id="amount" placeholder="Enter amount">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purpose">Purpose:</label>
+                        <select id="purpose">
+                            <option value="">Select purpose</option>
+                            <option value="Education">Education</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Cultural Events">Cultural Events</option>
+                            <option value="Temple Maintenance">Temple Maintenance</option>
+                            <option value="Community Development">Community Development</option>
+                            <option value="Emergency Relief">Emergency Relief</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date">
+                    </div>
+                </div>
+                <button class="btn" onclick="addCharity()">Add Donation</button>
+            </div>
+
+            <table class="charity-table" id="charityTable">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Donor Name</th>
+                        <th>Amount (₹)</th>
+                        <th>Purpose</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="charityTableBody">
+                    <!-- Charity entries will be added here -->
+                </tbody>
+            </table>
+
+            <div class="export-buttons">
+                <button class="btn" onclick="exportToPDF()">Export as PDF</button>
+                <button class="btn" onclick="exportToImage()">Export as Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full History Modal -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('historyModal')">&times;</span>
+            <h2>Complete History of DARJI Samaj</h2>
+            <div class="history-content">
+                <h3>Ancient Origins (Before 1000 CE)</h3>
+                <p>The DARJI community has its roots in ancient India, where skilled artisans were highly valued for their expertise in textile work. The profession of tailoring was considered noble, and DARJIs held important positions in society as creators of beautiful garments.</p>
+                
+                <h3>Medieval Period (1000-1700 CE)</h3>
+                <p>During the medieval period, especially under the Mughal Empire, DARJI craftsmen gained tremendous recognition. They were patronized by royal courts and created elaborate costumes, traditional wear, and ceremonial garments. Many DARJIs served as court tailors and established their reputation for exquisite craftsmanship.</p>
+                
+                <h3>Colonial Era (1700-1947)</h3>
+                <p>The colonial period brought both challenges and opportunities. While traditional patronage systems declined, new markets emerged. DARJI artisans adapted to changing fashions and incorporated Western tailoring techniques while preserving their traditional skills.</p>
+                
+                <h3>Post-Independence Era (1947-Present)</h3>
+                <p>After India's independence, the DARJI community continued to evolve. Many members diversified into other professions while maintaining their cultural identity. The community established organizations to preserve their heritage and support member welfare.</p>
+                
+                <h3>Cultural Significance</h3>
+                <p>The DARJI community has always been known for their precision, creativity, and dedication to quality. Their work reflects the rich textile heritage of India and continues to influence modern fashion and design.</p>
+                
+                <h3>Modern Contributions</h3>
+                <p>Today, members of the DARJI community excel in various fields including business, education, technology, and public service, while maintaining their commitment to community welfare and cultural preservation.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let members = [
+            {name: "Rajesh Darji", occupation: "Textile Business", city: "Ahmedabad", phone: "9876543210", email: "rajesh@email.com", age: "45", address: "Satellite, Ahmedabad"},
+            {name: "Priya Darji", occupation: "Fashion Designer", city: "Mumbai", phone: "9876543211", email: "priya@email.com", age: "32", address: "Bandra, Mumbai"},
+            {name: "Amit Darji", occupation: "Tailor", city: "Rajkot", phone: "9876543212", email: "amit@email.com", age: "38", address: "University Road, Rajkot"},
+            {name: "Meera Darji", occupation: "Boutique Owner", city: "Surat", phone: "9876543213", email: "meera@email.com", age: "29", address: "Ring Road, Surat"},
+            {name: "Kiran Darji", occupation: "Textile Engineer", city: "Ahmedabad", phone: "9876543214", email: "kiran@email.com", age: "41", address: "Vastrapur, Ahmedabad"},
+            {name: "Neha Darji", occupation: "Designer", city: "Vadodara", phone: "9876543215", email: "neha@email.com", age: "27", address: "Alkapuri, Vadodara"},
+            {name: "Suresh Darji", occupation: "Businessman", city: "Rajkot", phone: "9876543216", email: "suresh@email.com", age: "52", address: "Kalawad Road, Rajkot"},
+            {name: "Kavita Darji", occupation: "Teacher", city: "Gandhinagar", phone: "9876543217", email: "kavita@email.com", age: "35", address: "Sector 21, Gandhinagar"},
+            {name: "Ravi Darji", occupation: "Entrepreneur", city: "Bhavnagar", phone: "9876543218", email: "ravi@email.com", age: "43", address: "Ghogha Circle, Bhavnagar"},
+            {name: "Sunita Darji", occupation: "Social Worker", city: "Junagadh", phone: "9876543219", email: "sunita@email.com", age: "39", address: "Kalwa Chowk, Junagadh"}
+        ];
+
+        let charityData = [];
+        let charityCounter = 1;
+
+        // Side panel functionality
+        function toggleSidePanel() {
+            const sidePanel = document.getElementById('sidePanel');
+            sidePanel.classList.toggle('active');
+        }
+
+        // Modal functionality
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Sample charity data for demonstration
+        let allCharityRecords = [
+            {id: 1, donorName: "Rajesh Darji", amount: 10000, purpose: "Education", date: "2024-01-15", status: "Received"},
+            {id: 2, donorName: "Priya Darji", amount: 5000, purpose: "Healthcare", date: "2024-01-20", status: "Received"},
+            {id: 3, donorName: "Amit Darji", amount: 7500, purpose: "Cultural Events", date: "2024-02-05", status: "Received"},
+            {id: 4, donorName: "Meera Darji", amount: 3000, purpose: "Temple Maintenance", date: "2024-02-10", status: "Received"},
+            {id: 5, donorName: "Kiran Darji", amount: 15000, purpose: "Community Development", date: "2024-02-15", status: "Received"},
+            {id: 6, donorName: "Neha Darji", amount: 2000, purpose: "Education", date: "2024-03-01", status: "Received"},
+            {id: 7, donorName: "Suresh Darji", amount: 8000, purpose: "Emergency Relief", date: "2024-03-10", status: "Received"},
+            {id: 8, donorName: "Kavita Darji", amount: 4000, purpose: "Healthcare", date: "2024-03-15", status: "Received"},
+            {id: 9, donorName: "Ravi Darji", amount: 6000, purpose: "Cultural Events", date: "2024-04-01", status: "Received"},
+            {id: 10, donorName: "Sunita Darji", amount: 12000, purpose: "Education", date: "2024-04-10", status: "Received"}
+        ];
+
+        // Charity records functionality
+        function showCharityRecords() {
+            showModal('charityRecordsModal');
+            updateCharityRecordsDisplay();
+            toggleSidePanel();
+        }
+
+        function updateCharityRecordsDisplay() {
+            // Combine existing charity data with all records
+            const allRecords = [...allCharityRecords, ...charityData];
+            displayCharityRecords(allRecords);
+            updateCharityStatistics(allRecords);
+        }
+
+        function displayCharityRecords(records) {
+            const tbody = document.getElementById('charityRecordsTableBody');
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #666;">No charity records found</td></tr>';
+                return;
+            }
+
+            records.forEach((record, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${record.donorName}</td>
+                    <td>₹${record.amount.toLocaleString()}</td>
+                    <td>${record.purpose}</td>
+                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                    <td><span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">${record.status || 'Received'}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateCharityStatistics(records) {
+            const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
+            const uniqueDonors = new Set(records.map(record => record.donorName)).size;
+            const totalDonations = records.length;
+            const averageDonation = totalDonations > 0 ? totalAmount / totalDonations : 0;
+
+            document.getElementById('totalCharityAmount').textContent = `₹${totalAmount.toLocaleString()}`;
+            document.getElementById('totalDonors').textContent = uniqueDonors;
+            document.getElementById('totalDonations').textContent = totalDonations;
+            document.getElementById('averageDonation').textContent = `₹${Math.round(averageDonation).toLocaleString()}`;
+        }
+
+        function searchCharityRecords() {
+            const searchTerm = document.getElementById('charitySearch').value.toLowerCase();
+            const purposeFilter = document.getElementById('purposeFilter').value;
+            
+            let filteredRecords = [...allCharityRecords, ...charityData];
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredRecords = filteredRecords.filter(record => 
+                    record.donorName.toLowerCase().includes(searchTerm) ||
+                    record.purpose.toLowerCase().includes(searchTerm) ||
+                    record.amount.toString().includes(searchTerm)
+                );
+            }
+            
+            // Apply purpose filter
+            if (purposeFilter) {
+                filteredRecords = filteredRecords.filter(record => record.purpose === purposeFilter);
+            }
+            
+            displayCharityRecords(filteredRecords);
+            updateCharityStatistics(filteredRecords);
+        }
+
+        function filterCharityRecords() {
+            searchCharityRecords(); // Use the same function as search since it handles both
+        }
+
+        function exportCharityRecordsToPDF() {
+            const allRecords = [...allCharityRecords, ...charityData];
+            const printContent = createCharityRecordsPrintableContent(allRecords);
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function exportCharityRecordsToImage() {
+            alert('Image export functionality would require additional libraries. For now, please use the PDF export or take a screenshot.');
+        }
+
+        function createCharityRecordsPrintableContent(records) {
+            const currentDate = new Date().toLocaleDateString();
+            const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
+            const uniqueDonors = new Set(records.map(record => record.donorName)).size;
+            
+            let tableRows = '';
+            records.forEach((record, index) => {
+                tableRows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${record.donorName}</td>
+                        <td>₹${record.amount.toLocaleString()}</td>
+                        <td>${record.purpose}</td>
+                        <td>${new Date(record.date).toLocaleDateString()}</td>
+                        <td>${record.status || 'Received'}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>DARJI Samaj - Complete Charity Records</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .header h1 { color: #764ba2; margin-bottom: 10px; }
+                        .header p { margin: 5px 0; }
+                        .summary { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+                        .summary h3 { color: #764ba2; margin-bottom: 15px; }
+                        .stats { display: flex; justify-content: space-around; flex-wrap: wrap; }
+                        .stat-item { text-align: center; margin: 10px; }
+                        .stat-number { font-size: 1.5rem; font-weight: bold; color: #764ba2; }
+                        .stat-label { font-size: 0.9rem; color: #666; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+                        th { background-color: #764ba2; color: white; }
+                        tr:nth-child(even) { background-color: #f9f9f9; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>DARJI Samaj</h1>
+                        <h2>Complete Charity Records</h2>
+                        <p>Generated on: ${currentDate}</p>
+                    </div>
+                    
+                    <div class="summary">
+                        <h3>Summary Statistics</h3>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <div class="stat-number">₹${totalAmount.toLocaleString()}</div>
+                                <div class="stat-label">Total Amount Collected</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">${uniqueDonors}</div>
+                                <div class="stat-label">Total Donors</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">${records.length}</div>
+                                <div class="stat-label">Total Donations</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">₹${Math.round(totalAmount / records.length).toLocaleString()}</div>
+                                <div class="stat-label">Average Donation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Donor Name</th>
+                                <th>Amount (₹)</th>
+                                <th>Purpose</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                    
+                    <div class="footer">
+                        <p>Thank you to all our generous donors for supporting DARJI Samaj</p>
+                        <p>This report contains all charity records maintained by DARJI Samaj Management System</p>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        // New member functionality
+        function showNewMember() {
+            showModal('newMemberModal');
+            updateRecentMembersList();
+            toggleSidePanel();
+        }
+
+        function addNewMember() {
+            const name = document.getElementById('memberName').value;
+            const phone = document.getElementById('memberPhone').value;
+            const occupation = document.getElementById('memberOccupation').value;
+            const city = document.getElementById('memberCity').value;
+            const email = document.getElementById('memberEmail').value;
+            const age = document.getElementById('memberAge').value;
+            const address = document.getElementById('memberAddress').value;
+
+            if (!name || !phone || !occupation || !city) {
+                alert('Please fill all required fields (Name, Phone, Occupation, City)');
+                return;
+            }
+
+            // Validate phone number (basic validation)
+            const phoneRegex = /^[6-9]\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Please enter a valid 10-digit phone number');
+                return;
+            }
+
+            // Check if member already exists
+            const existingMember = members.find(member => 
+                member.phone === phone || member.name.toLowerCase() === name.toLowerCase()
+            );
+
+            if (existingMember) {
+                alert('A member with this name or phone number already exists!');
+                return;
+            }
+
+            const newMember = {
+                name,
+                phone,
+                occupation,
+                city,
+                email: email || 'Not provided',
+                age: age || 'Not specified',
+                address: address || 'Not provided',
+                dateAdded: new Date().toLocaleDateString()
+            };
+
+            members.push(newMember);
+            clearMemberForm();
+            updateRecentMembersList();
+            
+            alert(`Member ${name} has been successfully added to the community!`);
+        }
+
+        function clearMemberForm() {
+            document.getElementById('memberName').value = '';
+            document.getElementById('memberPhone').value = '';
+            document.getElementById('memberOccupation').value = '';
+            document.getElementById('memberCity').value = '';
+            document.getElementById('memberEmail').value = '';
+            document.getElementById('memberAge').value = '';
+            document.getElementById('memberAddress').value = '';
+        }
+
+        function updateRecentMembersList() {
+            const recentList = document.getElementById('recentMembersList');
+            recentList.innerHTML = '';
+            
+            // Show last 5 added members
+            const recentMembers = members.slice(-5).reverse();
+            
+            if (recentMembers.length === 0) {
+                recentList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No members added yet</p>';
+                return;
+            }
+
+            recentMembers.forEach(member => {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'member-item';
+                memberDiv.innerHTML = `
+                    <div class="member-info">
+                        <h4>${member.name}</h4>
+                        <p>${member.occupation} | ${member.city} | ${member.phone}</p>
+                        ${member.dateAdded ? `<p style="font-size: 0.8rem; color: #666;">Added on: ${member.dateAdded}</p>` : ''}
+                    </div>
+                `;
+                recentList.appendChild(memberDiv);
+            });
+        }
+
+        // Members functionality
+        function showMembers() {
+            showModal('membersModal');
+            loadMembers();
+            toggleSidePanel();
+        }
+
+        function loadMembers() {
+            const membersList = document.getElementById('membersList');
+            membersList.innerHTML = '';
+            
+            members.forEach(member => {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'member-item';
+                memberDiv.innerHTML = `
+                    <div class="member-info">
+                        <h4>${member.name}</h4>
+                        <p>${member.occupation} | ${member.city} | ${member.phone}</p>
+                    </div>
+                `;
+                membersList.appendChild(memberDiv);
+            });
+        }
+
+        function searchMembers() {
+            const searchTerm = document.getElementById('memberSearch').value.toLowerCase();
+            const filteredMembers = members.filter(member => 
+                member.name.toLowerCase().includes(searchTerm) ||
+                member.occupation.toLowerCase().includes(searchTerm) ||
+                member.city.toLowerCase().includes(searchTerm)
+            );
+            
+            const membersList = document.getElementById('membersList');
+            membersList.innerHTML = '';
+            
+            filteredMembers.forEach(member => {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'member-item';
+                memberDiv.innerHTML = `
+                    <div class="member-info">
+                        <h4>${member.name}</h4>
+                        <p>${member.occupation} | ${member.city} | ${member.phone}</p>
+                    </div>
+                `;
+                membersList.appendChild(memberDiv);
+            });
+        }
+
+        // Charity billing functionality
+        function showCharityBilling() {
+            showModal('charityModal');
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            toggleSidePanel();
+        }
+
+        function addCharity() {
+            const donorName = document.getElementById('donorName').value;
+            const amount = document.getElementById('amount').value;
+            const purpose = document.getElementById('purpose').value;
+            const date = document.getElementById('date').value;
+
+            if (!donorName || !amount || !purpose || !date) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const charity = {
+                id: charityCounter++,
+                donorName,
+                amount: parseFloat(amount),
+                purpose,
+                date,
+                status: 'Received'
+            };
+
+            charityData.push(charity);
+            updateCharityTable();
+            clearForm();
+        }
+
+        function updateCharityTable() {
+            const tbody = document.getElementById('charityTableBody');
+            tbody.innerHTML = '';
+
+            let total = 0;
+            charityData.forEach((charity, index) => {
+                total += charity.amount;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${charity.donorName}</td>
+                    <td>₹${charity.amount.toLocaleString()}</td>
+                    <td>${charity.purpose}</td>
+                    <td>${new Date(charity.date).toLocaleDateString()}</td>
+                    <td><button class="btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="removeCharity(${charity.id})">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            totalRow.innerHTML = `
+                <td colspan="2"><strong>Total</strong></td>
+                <td><strong>₹${total.toLocaleString()}</strong></td>
+                <td colspan="3"></td>
+            `;
+            tbody.appendChild(totalRow);
+        }
+
+        function removeCharity(id) {
+            charityData = charityData.filter(charity => charity.id !== id);
+            updateCharityTable();
+        }
+
+        function clearForm() {
+            document.getElementById('donorName').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('purpose').value = '';
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        }
+
+        function exportToPDF() {
+            // Create a printable version
+            const printContent = createPrintableContent();
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function exportToImage() {
+            // Create a canvas and convert table to image
+            const table = document.getElementById('charityTable').cloneNode(true);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Simple image export simulation
+            alert('Image export functionality would require additional libraries. For now, please use the PDF export or take a screenshot.');
+        }
+
+        function createPrintableContent() {
+            const currentDate = new Date().toLocaleDateString();
+            let total = charityData.reduce((sum, charity) => sum + charity.amount, 0);
+            
+            let tableRows = '';
+            charityData.forEach((charity, index) => {
+                tableRows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${charity.donorName}</td>
+                        <td>₹${charity.amount.toLocaleString()}</td>
+                        <td>${charity.purpose}</td>
+                        <td>${new Date(charity.date).toLocaleDateString()}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>DARJI Samaj - Charity Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .header h1 { color: #764ba2; margin-bottom: 10px; }
+                        .header p { margin: 5px 0; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+                        th { background-color: #764ba2; color: white; }
+                        .total-row { background-color: #f0f0f0; font-weight: bold; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>DARJI Samaj</h1>
+                        <h2>Charity Donation Report</h2>
+                        <p>Generated on: ${currentDate}</p>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Donor Name</th>
+                                <th>Amount (₹)</th>
+                                <th>Purpose</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                            <tr class="total-row">
+                                <td colspan="2"><strong>Total Donations</strong></td>
+                                <td><strong>₹${total.toLocaleString()}</strong></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="footer">
+                        <p>Thank you for your generous contributions to DARJI Samaj</p>
+                        <p>This report was generated automatically by DARJI Samaj Management System</p>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        function showFullHistory() {
+            showModal('historyModal');
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // Close side panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidePanel = document.getElementById('sidePanel');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidePanel.contains(event.target) && !menuToggle.contains(event.target)) {
+                sidePanel.classList.remove('active');
+            }
+        });
+
+        // Initialize date field
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateField = document.getElementById('date');
+            if (dateField) {
+                dateField.value = new Date().toISOString().split('T')[0];
+            }
+        });
+    </script>
+</body>
+</html>
